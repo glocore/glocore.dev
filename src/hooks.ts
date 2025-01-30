@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 
 // Source: https://usehooks.com/useEventListener/
-export function useEventListener(eventName, handler, element = window) {
+export function useEventListener(
+  eventName: any,
+  handler: any,
+  element = window
+) {
   // Create a ref that stores handler
-  const savedHandler = React.useRef();
+  const savedHandler = React.useRef<any>();
 
   // Update ref.current value if handler changes.
   // This allows our effect below to always get latest handler ...
@@ -21,7 +26,7 @@ export function useEventListener(eventName, handler, element = window) {
       if (!isSupported) return;
 
       // Create event listener that calls handler function stored in ref
-      const eventListener = (event) => savedHandler.current(event);
+      const eventListener = (event: any) => savedHandler.current?.(event);
 
       // Add event listener
       element.addEventListener(eventName, eventListener);
@@ -33,22 +38,4 @@ export function useEventListener(eventName, handler, element = window) {
     },
     [eventName, element] // Re-run if eventName or element changes
   );
-}
-
-export function useMouseCoordinates() {
-  const [mouseCoordinates, setMouseCoordinates] = React.useState({
-    x: 0,
-    y: 0
-  });
-
-  const handler = React.useCallback(
-    ({ clientX, clientY }) => {
-      setMouseCoordinates({ x: clientX, y: clientY });
-    },
-    [setMouseCoordinates]
-  );
-
-  useEventListener("mousemove", handler);
-
-  return mouseCoordinates;
 }

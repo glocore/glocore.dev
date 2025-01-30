@@ -1,19 +1,19 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useEventListener } from "./hooks";
 import "./styles.css";
-import sticker1 from "./stickers/sticker1.png";
-import sticker2 from "./stickers/sticker2.png";
-import sticker3 from "./stickers/sticker3.png";
-import sticker4 from "./stickers/sticker4.png";
-import sticker5 from "./stickers/sticker5.png";
-import sticker6 from "./stickers/sticker6.png";
-import sticker7 from "./stickers/sticker7.png";
-import sticker8 from "./stickers/sticker8.png";
-import sticker9 from "./stickers/sticker9.png";
-import sticker10 from "./stickers/sticker10.png";
-import ticket1 from "./thumbnails/ticket1.png";
-import ticket2 from "./thumbnails/ticket2.png";
-import ticket3 from "./thumbnails/ticket3.png";
+import sticker1 from "/stickers/sticker1.png";
+import sticker2 from "/stickers/sticker2.png";
+import sticker3 from "/stickers/sticker3.png";
+import sticker4 from "/stickers/sticker4.png";
+import sticker5 from "/stickers/sticker5.png";
+import sticker6 from "/stickers/sticker6.png";
+import sticker7 from "/stickers/sticker7.png";
+import sticker8 from "/stickers/sticker8.png";
+import sticker9 from "/stickers/sticker9.png";
+import sticker10 from "/stickers/sticker10.png";
+import ticket1 from "/thumbnails/ticket1.png";
+import ticket2 from "/thumbnails/ticket2.png";
+import ticket3 from "/thumbnails/ticket3.png";
 
 const stickers = [
   sticker1,
@@ -25,17 +25,8 @@ const stickers = [
   sticker7,
   sticker8,
   sticker9,
-  sticker10
+  sticker10,
 ];
-
-setTimeout(() => {
-  console.clear();
-  console.log(
-    "Normally, you'd see a link to a company's careers page or something to show " +
-      "that they're cool and hip. Unfortunately, I'm only a mere mortal, " +
-      "and so all I have to offer you is this crisp high-five ✋"
-  );
-}, 5000);
 
 let uniqueStickers = [...stickers];
 
@@ -49,89 +40,77 @@ const getRandomSticker = () => {
   }
 
   const randomIndex = Math.floor(Math.random() * uniqueStickers.length);
-  const sticker = uniqueStickers.splice(randomIndex, 1);
+  const sticker = uniqueStickers.splice(randomIndex, 1)[0];
 
   return sticker;
 };
 
 export default function App() {
-  const [stickers, setStickers] = React.useState([]);
+  const [stickers, setStickers] = React.useState<ReactElement[]>([]);
 
-  const clickHandler = React.useCallback(({ clientX, clientY }) => {
-    const randomNumber = Math.random();
+  const clickHandler = React.useCallback(
+    ({ clientX, clientY }: { clientX: string; clientY: string }) => {
+      const sticker = getRandomSticker();
+      const randomRotation = Math.random() * 360;
 
-    if (randomNumber > 0.9) {
-    }
-
-    const sticker = getRandomSticker();
-    const randomRotation = Math.random() * 360;
-
-    setStickers((stickers) => [
-      ...stickers,
-      <img
-        src={sticker}
-        alt="sticker"
-        style={{
-          width: 100,
-          position: "absolute",
-          top: clientY,
-          left: clientX,
-          transform: `translate(-50%, -50%) rotate(${randomRotation}deg)`,
-          zIndex: -1
-        }}
-      />
-    ]);
-  }, []);
+      setStickers((stickers) => [
+        ...stickers,
+        <img
+          src={sticker}
+          alt="sticker"
+          style={{
+            width: 100,
+            position: "absolute",
+            top: clientY,
+            left: clientX,
+            transform: `translate(-50%, -50%) rotate(${randomRotation}deg)`,
+            pointerEvents: "none",
+            zIndex: -1,
+          }}
+        />,
+      ]);
+    },
+    []
+  );
 
   useEventListener("mousedown", clickHandler);
 
   return (
     <div className="mouse-area">
-      {stickers.map((sticker, index) => (
-        <React.Fragment key={index}>{sticker}</React.Fragment>
-      ))}
+      {stickers}
 
       <div className="content-center">
         <div className="content-wrapper">
           <h2 className="greeting-heading">
-            Hi there, I'm <b>Ashwin</b>. I build websites and apps.
+            hi, i'm <b>glocore</b>. i build websites and apps.
           </h2>
 
           <div className="profile-links-wrapper">
             <div className="profile-link-wrapper">
               <a
                 href="https://github.com/glocore"
-                target="__blank"
+                target="_blank"
                 className="profile-link"
               >
-                GitHub
+                github
               </a>
             </div>
             <div className="profile-link-wrapper">
               <a
                 href="https://dev.to/glocore"
-                target="__blank"
+                target="_blank"
                 className="profile-link"
               >
-                Dev.to
+                dev.to
               </a>
             </div>
             <div className="profile-link-wrapper">
               <a
-                href="https://linkedin.com/in/glocore"
-                target="__blank"
+                href="https://twitter.com/glocore_tweets"
+                target="_blank"
                 className="profile-link"
               >
-                LinkedIn
-              </a>
-            </div>
-            <div className="profile-link-wrapper">
-              <a
-                href="https://twitter.com/theglocore"
-                target="__blank"
-                className="profile-link"
-              >
-                Twitter
+                twitter
               </a>
             </div>
           </div>
@@ -144,6 +123,7 @@ export default function App() {
             href="https://glocore-unsplash-search.netlify.app/"
             target="_blank"
             rel="noreferrer"
+            className="project-link"
           >
             <img
               src={ticket1}
@@ -178,7 +158,7 @@ export default function App() {
           <br />
           <br />
           <h2 className="greeting-heading">
-            Thanks for visiting! Stay awesome.
+            thanks for visiting! stay awesome.
             <span role="img" aria-label="peace emoji">
               ✌
             </span>
